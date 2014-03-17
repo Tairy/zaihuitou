@@ -1,8 +1,4 @@
-<?
-/**
-*
-*
-*/
+<?php
 class MessageReceive{
 	public static $postObj;
 
@@ -22,3 +18,4 @@ class MessageReceive{
 		}
 	}
 }
+?>

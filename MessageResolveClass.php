@@ -1,4 +1,4 @@
-<?
+<?php
 class MessageResolve{
 	public function sortMessageType(){
 		switch (MessageReceive::$postObj -> MsgType) {
@@ -12,14 +12,14 @@ class MessageResolve{
 				$response = new MessageResponse("diliweizhi","text");
 				break;
 			case 'link':
-				$response = new ResponseView("lianjie","text");
+				$response = new MessageResponse("lianjie","text");
 				break;
 			case 'event':
 				$this -> resolveEventCommand();
-				//$response = new ResponseView("shijian","text");
+				//$response = new MessageResponse("shijian","text");
 				break;
 			default:
-				$response = new ResponseView("/疑问不认识的信息类型","text");
+				$response = new MessageResponse("/疑问不认识的信息类型","text");
 				break;
 		}
 	}
@@ -29,6 +29,14 @@ class MessageResolve{
 	}
 
 	private function resolveEventCommand(){
-
+		switch (MessageReceive::$postObj -> Event) {
+			case 'subscribe':
+				new MessageResponse("欢迎订阅!","text");
+				break;
+			
+			default:
+				# code...
+				break;
+		}
 	}
 }

@@ -21,7 +21,7 @@ class MessageResponse{
 					<Content><![CDATA[%s]]></Content>
 					<FuncFlag>0</FuncFlag>
 					</xml>";             
-    $resultStr = sprintf($textTpl, UserView::$postObj -> FromUserName, UserView::$postObj -> ToUserName, $time, $msgType, $contentStr);
+    $resultStr = sprintf($textTpl, MessageReceive::$postObj -> FromUserName, MessageReceive::$postObj -> ToUserName, $time, $msgType, $contentStr);
     echo $resultStr;
 	}
 }
