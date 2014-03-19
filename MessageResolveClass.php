@@ -1,5 +1,33 @@
 <?php
+
+/**
+ * 解析用户消息
+ *
+ * 这个类主要是解析MessageReceive::$postObj -> MsgType和
+ * MessageReceive::$postObj -> Content两个变量的内容，然
+ * 后再调用不同的接口处理数据
+ * 
+ * @category   MessageResolve
+ * @author     Tairy <tairyguo@gmail.com>
+ * @copyright  2014 Tairy
+ * @version    0.0.1
+ */
+// {{{ MessageResolve
+
 class MessageResolve{
+	// {{{ sortMessageType()
+
+	/**
+	*
+	* 分析信息类型
+	* 
+	* 主要是根据MessageReceive::$postObj -> MsgType获取用户发送的
+	* 数据的类型，从而做出相应的操作
+	*
+	* @param void
+	* @access public
+	*
+	*/
 	public function sortMessageType(){
 		switch (MessageReceive::$postObj -> MsgType) {
 			case 'text':
@@ -23,7 +51,24 @@ class MessageResolve{
 		}
 	}
 
-	public function resolveTextCommand(){
+	// }}}
+
+	// {{{ function resolveTextCommand()
+
+	/**
+	*
+	* 解析用户文本信息
+	*
+	* 解析MessageReceive::$postObj -> MsgType为text时的操作
+	* 主要是根据MessageReceive::$postObj -> Content，即用的
+	* 发送的文本信息，确定调用不同的接口.
+	*
+	* @param void
+	* @access private
+	*
+	*/
+
+	private function resolveTextCommand(){
 		switch (MessageReceive::$postObj -> Content) {
 			case '今天实验':
 				$date = date('Y-n-d');
@@ -76,6 +121,23 @@ class MessageResolve{
 
 	}
 
+	// }}}
+
+	//{{{resolveEventCommand()
+
+	/**
+	*
+	* 解析用户事件命令
+	*
+	* 解析MessageReceive::$postObj -> MsgType为event时的操作
+	* 主要是根据MessageReceive::$postObj -> Event，来确定事件
+	* 对应的操作
+	*
+	* @param void
+	* @access private
+	* 
+	*/
+
 	private function resolveEventCommand(){
 		switch (MessageReceive::$postObj -> Event) {
 			case 'subscribe':
@@ -87,4 +149,8 @@ class MessageResolve{
 				break;
 		}
 	}
+
+	// }}}
 }
+
+// }}}
