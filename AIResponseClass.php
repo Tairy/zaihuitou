@@ -28,8 +28,3 @@ class AIResponse{
 		$collection -> insert(array("comment" => $comment, "response" => $response));
 	}
 }
-
-// $test = new AIResponse('金仁超');
-// $test -> getAIResponse();
-//$test -> addResponseInfo('金仁超','金仁超是傻逼!');
-// echo "success";
