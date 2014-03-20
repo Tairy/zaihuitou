@@ -90,10 +90,10 @@ class GetPyExperiment{
 
   public function getExpreimentByRange($startdate, $enddate){
     $collection = $this -> db -> experiment;
-    $cursor = $collection -> find(array("date" => array('$gt' => $startdate,'$lt' => $enddate)));
+    $cursor = $collection -> find(array("date" => array('$gte' => $startdate,'$lte' => $enddate))) ->sort(array("date" => 1));;
     $re_info = "";
     foreach ($cursor as $doc) {
-      $re_info .= "--------\n实验名称：".$doc['name']."\n实验日期:".$doc['date']." ".$doc['day']."\n实验成员:".$doc['students']."\n实验地点:".$doc['place']."\n实验类型:".$doc['type']."\n实验老师:".$doc['teacher']."\n";
+      $re_info .= "-----------------\n实验名称：".$doc['name']."\n实验日期:".$doc['date']." ".$doc['day']."\n实验成员:".$doc['students']."\n实验地点:".$doc['place']."\n实验类型:".$doc['type']."\n实验老师:".$doc['teacher']."\n";
     }
     return $re_info;
   }
