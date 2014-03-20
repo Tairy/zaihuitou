@@ -28,5 +28,11 @@
 
 核心类中每个函数的功能详见代码。
 
+###4.使用工具
+
+- php
+- mongodb
+
+
 
   [1]: https://github.com/Tairy/weixin
