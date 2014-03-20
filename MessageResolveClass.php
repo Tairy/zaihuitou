@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 解析用户消息
  *
@@ -13,6 +12,8 @@
  * @version    0.0.1
  */
 // {{{ MessageResolve
+
+date_default_timezone_set('Asia/Shanghai');
 
 class MessageResolve{
 	// {{{ sortMessageType()
@@ -29,6 +30,8 @@ class MessageResolve{
 	*
 	*/
 	public function sortMessageType(){
+		$userinfo = new UserInfoRecord();
+		$userinfo -> recordUserInfo(MessageReceive::$postObj -> FromUserName);
 		switch (MessageReceive::$postObj -> MsgType) {
 			case 'text':
 				$this -> resolveTextCommand();
@@ -85,8 +88,8 @@ class MessageResolve{
 				new MessageResponse($responseMes,"text");
 				break;
 			case '本周实验':
-				$monday = date('Y-m-d',strtotime('last Monday'));
-				$friday = date('Y-m-d',strtotime('Friday'));
+				$monday = date('Y-n-d',strtotime('last Monday'));
+				$friday = date('Y-n-d',strtotime('Friday'));
 				$pyExperiment = new GetPyExperiment();
 				$respons = $pyExperiment -> getExpreimentByRange($monday,$friday);
 				if(empty($respons)){
@@ -99,8 +102,8 @@ class MessageResolve{
 				break;
 
 			case '下周实验':
-				$monday = date('Y-m-d',strtotime('Monday'));
-				$friday = date('Y-m-d',strtotime('next Friday'));
+				$monday = date('Y-n-d',strtotime('Monday'));
+				$friday = date('Y-n-d',strtotime('friday next week'));
 				$pyExperiment = new GetPyExperiment();
 				$respons = $pyExperiment -> getExpreimentByRange($monday,$friday);
 				if(empty($respons)){
@@ -111,7 +114,17 @@ class MessageResolve{
 				}
 				new MessageResponse($responseMes,"text");
 				break;
-			
+
+			case '关于':
+			  $responseMes = "感谢您的关注，本帐号主要为我和我的朋友们提供便捷的服务，有什么好的建议请发邮件给我：tairyguo@gmail.com，对开发有兴趣的朋友也可以去https://github.com/Tairy/zaihuitou上fork代码哦～";
+			  new MessageResponse($responseMes,"text");
+			  break;
+
+			case '帮助':
+				$responseMes = "回复'今天实验','明天实验','本周实验','下周实验'即可查询实验相关信息,回复'关于'了解帐号相关信息,回复'帮助'获取操作帮助";
+			  new MessageResponse($responseMes,"text");
+			  break;
+
 			default:
 				$aiResponse = new AIResponse(MessageReceive::$postObj -> Content);
 				$responseMes = $aiResponse -> getAIResponse();
@@ -141,7 +154,7 @@ class MessageResolve{
 	private function resolveEventCommand(){
 		switch (MessageReceive::$postObj -> Event) {
 			case 'subscribe':
-				new MessageResponse("欢迎订阅!\n回复'今天实验','明天实验','本周实验','下周实验'即可查询实验相关信息。","text");
+				new MessageResponse("欢迎订阅!\n回复'今天实验','明天实验','本周实验','下周实验'即可查询实验相关信息,回复'关于'了解帐号相关信息,回复'帮助'获取操作帮助","text");
 				break;
 			
 			default:

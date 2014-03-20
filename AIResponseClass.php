@@ -77,6 +77,7 @@ class AIResponse{
 	public function getAIResponse()
 	{
 		$collection = $this -> db -> response;
+		$this -> message = trim($this -> message);
 		$cursor = $collection -> find(array("comment" => $this -> message));
 		$cursor_array = iterator_to_array($cursor,false);
 		$array_count = count($cursor_array);
@@ -93,7 +94,7 @@ class AIResponse{
 	// {{{ addResponseInfo($comment, $response)
 
 	/**
-   * 添加一天消息映射
+   * 添加一条消息映射
    *
    * @param string $comment 用户回复的消息
    * @param string $response 返回給用户的消息
