@@ -66,10 +66,17 @@ class UserInfoRecord{
 	 * 
    */
 	public function  recordUserInfo($wx_id){
+		$wx_id = (string)$wx_id;
 		$conllection = $this -> db -> userinfo;
 		if(!$this -> hasUserRecord($wx_id)){
-			$conllection -> insert(array('wx_id' => $wx_id));
+			$userId = time();
+			$userinfo = array(
+				"wx_id" => $wx_id,
+				"user_id" => $userId
+				);
+			$conllection -> insert($userinfo);
 		}
+		return $userId;
 	}
 	// }}}
 
@@ -86,6 +93,7 @@ class UserInfoRecord{
 	 * */
 
 	public function hasUserRecord($wx_id){
+		$wx_id = (string)$wx_id;
 		$collection = $this -> db -> userinfo;
 		$cursor = $collection -> findOne(array('wx_id' => $wx_id));
 		if(empty($cursor)){
@@ -95,6 +103,23 @@ class UserInfoRecord{
 		}
 	}
 	// }}}
+
+	public function getUseridByWxid($wx_id){
+		$wx_id = (string)$wx_id;
+		$collection = $this -> db -> userinfo;
+		$userinfo = $collection -> findOne(array('wx_id' => $wx_id));
+		return $userinfo['user_id'];
+	}
+
+	public function getHomeTemp($wx_id){
+		$wx_id = (string)$wx_id;
+		$collection = $this -> db -> userinfo;
+		$userinfo = $collection -> findOne(array('wx_id' => $wx_id));
+		if(empty($userinfo['home_temp'])){
+			return "未绑定温度测试设备";
+		}
+		return $userinfo['home_temp'];
+	}
 }
 
 // }}}

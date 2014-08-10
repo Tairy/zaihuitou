@@ -30,8 +30,6 @@ class MessageResolve{
 	*
 	*/
 	public function sortMessageType(){
-		$userinfo = new UserInfoRecord();
-		$userinfo -> recordUserInfo(MessageReceive::$postObj -> FromUserName);
 		switch (MessageReceive::$postObj -> MsgType) {
 			case 'text':
 				$this -> resolveTextCommand();
@@ -48,6 +46,9 @@ class MessageResolve{
 			case 'event':
 				$this -> resolveEventCommand();
 				break;
+			case 'voice':
+				$this -> resolveVoiceCommand();
+			  break;
 			default:
 				$response = new MessageResponse("/疑问不认识的信息类型","text");
 				break;
@@ -115,6 +116,27 @@ class MessageResolve{
 				new MessageResponse($responseMes,"text");
 				break;
 
+			case '开灯':
+				$userinfo = new UserInfoRecord();
+				$userid = $userinfo -> getUseridByWxid(MessageReceive::$postObj -> FromUserName);
+			  $taskhandle = new StoreTask();
+			  $taskhandle -> storeTask($userid, 1);
+			  new MessageResponse("开灯成功","text");
+			  break;
+			case '关灯':
+				$userinfo = new UserInfoRecord();
+				$userid = $userinfo -> getUseridByWxid(MessageReceive::$postObj -> FromUserName);
+			  $taskhandle = new StoreTask();
+			  $taskhandle -> storeTask($userid, 0);
+			  new MessageResponse("关灯成功","text");
+			  break;
+
+			case '室内温度':
+				$userinfo = new UserInfoRecord();
+				$hometemp = $userinfo -> getHomeTemp(MessageReceive::$postObj -> FromUserName);
+				new MessageResponse($hometemp,"text");
+				break;
+
 			case '关于':
 			  $responseMes = "感谢您的关注，本帐号主要为我和我的朋友们提供便捷的服务，有什么好的建议请发邮件给我：tairyguo@gmail.com，对开发有兴趣的朋友也可以去https://github.com/Tairy/zaihuitou上fork代码哦～";
 			  new MessageResponse($responseMes,"text");
@@ -154,11 +176,40 @@ class MessageResolve{
 	private function resolveEventCommand(){
 		switch (MessageReceive::$postObj -> Event) {
 			case 'subscribe':
-				new MessageResponse("欢迎订阅!\n回复'今天实验','明天实验','本周实验','下周实验'即可查询实验相关信息,回复'关于'了解帐号相关信息,回复'帮助'获取操作帮助","text");
+				$userinfo = new UserInfoRecord();
+				$userid = $userinfo -> recordUserInfo(MessageReceive::$postObj -> FromUserName);
+				new MessageResponse("欢迎订阅!YourId:".$userid,"text");
 				break;
 			
 			default:
 				# code...
+				break;
+		}
+	}
+
+	private function resolveVoiceCommand(){
+		switch (MessageReceive::$postObj -> Recognition) {
+			case '温度':
+				$userinfo = new UserInfoRecord();
+				$hometemp = $userinfo -> getHomeTemp(MessageReceive::$postObj -> FromUserName);
+				new MessageResponse($hometemp,"text");
+				break;
+			case '开灯':
+				$userinfo = new UserInfoRecord();
+				$userid = $userinfo -> getUseridByWxid(MessageReceive::$postObj -> FromUserName);
+			  $taskhandle = new StoreTask();
+			  $taskhandle -> storeTask($userid, 1);
+			  new MessageResponse("开灯成功","text");
+			  break;
+			case '关灯':
+				$userinfo = new UserInfoRecord();
+				$userid = $userinfo -> getUseridByWxid(MessageReceive::$postObj -> FromUserName);
+			  $taskhandle = new StoreTask();
+			  $taskhandle -> storeTask($userid, 0);
+			  new MessageResponse("关灯成功","text");
+			  break;
+			default:
+				new MessageResponse("语音指令不正确，请确定:".MessageReceive::$postObj -> Recognition,"text");
 				break;
 		}
 	}
