@@ -1,6 +1,5 @@
 ##zaihuitou项目文档
 
----
 ###1.现在支持的功能：
 
 - 接受用户订阅并返回欢迎信息
@@ -13,7 +12,7 @@
 - **MessageReceiveClass.php**  信息接受类，主要接受微信服务器发送的信息，写入类变量。
 - **MessageResolveClass.php**  信息处理类，这里主要是根据用户发送的信息调用不同的接口，并返回结果。
 
->注：以上四个文件属于核心文件，扩展的时候只需要在MessageResponse类中加上相应的接口调用代码就可以了*
+注：以上四个文件属于核心文件，扩展的时候只需要在MessageResponse类中加上相应的接口调用代码就可以了
 - **GetPyExperimentClass.php**  我自己用的一个扩展功能，从Mongondb里获取数据并返回，具体数据是什么就不要在意。
 - **AIResponseClass.php** 我自己扩展的一个功能，想着能够智能回复，（没学过人工智能，只是自己瞎猜这写的，没什么科学依据）。
 - **UserInfoRecordClass.php** 用户信息记录类，记录订阅者weichatID便于提供个性化服务。
